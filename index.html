@@ -7,11 +7,18 @@
 <meta name="description" content="「はい」〜「いいえ」で答える159問から、17のテーマでのあなたの哲学的な立ち位置（〇〇主義）と、考え方が近い哲学者がわかる診断です。">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#d23f26">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#a8321f">
+<link rel="canonical" href="https://yuu-0909-chacha.github.io/philo-type/">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://yuu-0909-chacha.github.io/philo-type/">
+<meta property="og:site_name" content="哲学タイプ診断">
+<meta property="og:image" content="https://yuu-0909-chacha.github.io/philo-type/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="あなたは何主義？ 哲学タイプ診断">
 <meta property="og:title" content="あなたは何主義？ 哲学タイプ診断">
 <meta property="og:description" content="「はい」〜「いいえ」で答える159問から、17のテーマでのあなたの哲学的な立ち位置（〇〇主義）と、考え方が近い哲学者がわかる診断です。">
 <meta property="og:locale" content="ja_JP">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23d23f26'/%3E%3Cellipse cx='32' cy='32' rx='13' ry='18' fill='%232a2a2f' stroke='%23ffffff' stroke-width='5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -604,7 +611,7 @@ const others=(r?r.others:[]).map(o=>`<p class="oname">${o.name}</p><p>${o.desc}<
 let score="";if(r){score=th.type==="bi"?`スコア ${fmt(r.s)}（−1〜+1、＋が${th.pos.name}側）`:th.type==="quad"?`決定論 ${fmt(sc.fw_det??0)} ／ 自由と責任 ${fmt(sc.fw_resp??0)}`:r.opts.map(o=>`${o.o.name} ${fmt(o.v)}`).join(" ／ ");score+="・"}
 return`<section class="row"><div class="row-h"><h4 class="tname">${th.name}</h4><span class="tq">${th.q}</span></div><div class="left">${marksHTML(th,r)}<div class="verdict">${r?`<b>${r.name}</b>${r.deg?`<span class="deg">${r.deg}</span>`:""}`:`<span class="deg">まだ回答がないよ</span>`}</div></div><div class="right">${r?`<p class="desc">${r.desc}${r.also?`（${r.also}にもかなり近いよ）`:""}</p>`:""}<details><summary>くわしく</summary><div class="more">${others?`<p class="sub">ほかの立場</p>${others}`:""}${th.survey?`<p class="survey">プロの哲学者アンケートでは…${th.survey}</p>`:""}<p class="survey">${score}${n} / ${th.items.length}問に回答</p></div></details></div></section>`}
 const canShare=typeof navigator.share==="function";
-const pageURL=()=>/^https?:$/.test(location.protocol)?location.href.split("#")[0].split("?")[0]:"";
+const pageURL=()=>{const c=document.querySelector('link[rel="canonical"]');return c?c.href:/^https?:$/.test(location.protocol)?location.href.split("#")[0].split("?")[0]:""};
 function shareText(H,M){let t=H.length?`私の哲学タイプは「${H.map(h=>h.r.name).join(" × ")}」でした！`:"哲学タイプ診断をやってみた！";if(M[0])t+=`いちばん考え方が近い哲学者は${M[0].p.n}（一致度${M[0].pct}%）。`;return t+" #哲学タイプ診断"}
 function xURL(t){const u=pageURL();return"https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+(u?"&url="+encodeURIComponent(u):"")}
 async function share(){const{sc,cnt,R}=results(S.answers);const d={title:"あなたは何主義？ 哲学タイプ診断",text:shareText(headline(R,cnt),match(sc))};const u=pageURL();if(u)d.url=u;try{await navigator.share(d)}catch(e){}}
