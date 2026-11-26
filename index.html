@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>あなたは何主義？ 哲学タイプ診断</title>
+<meta name="description" content="「はい」〜「いいえ」で答える159問から、17のテーマでのあなたの哲学的な立ち位置（〇〇主義）と、考え方が近い哲学者がわかる診断です。">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#d23f26">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#a8321f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="あなたは何主義？ 哲学タイプ診断">
+<meta property="og:description" content="「はい」〜「いいえ」で答える159問から、17のテーマでのあなたの哲学的な立ち位置（〇〇主義）と、考え方が近い哲学者がわかる診断です。">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23d23f26'/%3E%3Cellipse cx='32' cy='32' rx='13' ry='18' fill='%232a2a2f' stroke='%23ffffff' stroke-width='5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap">
+<style>
+/* VOICE   everyday: a playful but careful self-test about big questions
+   IDEA    a Japanese mark-sheet answer form: vermilion print, pencil-filled ovals, timing marks down the edge
+   PICTURE the statement over seven graded ovals; the result is the same sheet, marked, row by row
+   COLOUR  white paper, vermilion #d23f26 print, graphite pencil; night: graphite paper, light vermilion, chalk
+   TYPE    Zen Kaku Gothic New 900 for titles and results, 500 for text
+   LAYOUT  one sheet column up to 680px; results widen to 980px, philosopher cards in three columns, one under 760px */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#141416);--ink:light-dark(#1f1f23,#ecebe6);--muted:light-dark(#5d5d64,#a8a7a2);--shu:light-dark(#d23f26,#ff7a5c);--band:light-dark(#d23f26,#a8321f);--soft:light-dark(#fdebe6,#3a1f1a);--rule:light-dark(#f2b9ab,#5b2c24);--pencil:light-dark(#2a2a2f,#e8e6e0);--card:light-dark(#ffffff,#1b1b1e)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.7 "Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP","Noto Sans CJK JP","Yu Gothic",sans-serif;overflow-x:clip}
+button{font:inherit;color:inherit}
+a{color:var(--shu)}
+.wrap{max-width:680px;margin:0 auto;padding-inline:max(16px,4vw)}
+.res-wrap{max-width:980px;margin:0 auto;padding-inline:max(16px,4vw)}
+.bar{position:sticky;top:0;z-index:5;background:var(--band);color:#fff}
+.bar-in{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:50px}
+.brand{margin:0;font-weight:900;font-size:16px}
+.count{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:15px}
+.prog{height:6px;background:color-mix(in srgb,#fff 28%,var(--band))}
+.prog i{display:block;height:100%;width:0;background:#fff;transition:width .25s}
+.view{padding-block:20px 40px}
+.rview{padding-top:0}
+body.wide .bar .wrap{max-width:980px}
+body.wide .prog{display:none}
+.title{margin:4px 0 8px;font-size:clamp(32px,8.5vw,46px);font-weight:900;line-height:1.08;letter-spacing:-.02em}
+.lead p{margin:0 0 16px;max-width:38em}
+.lead-s{margin:0 0 12px;color:var(--shu);font-weight:700}
+.sheet{position:relative;border:2px solid var(--shu);border-radius:8px;padding:16px 14px 14px 28px;background:var(--card)}
+.sheet::before{content:"";position:absolute;left:8px;top:16px;bottom:16px;width:8px;background:repeating-linear-gradient(to bottom,var(--pencil) 0 5px,transparent 5px 15px);opacity:.8}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--rule);padding-bottom:10px}
+.qno{font-weight:900;color:var(--shu);font-variant-numeric:tabular-nums}
+.tag{font-size:13px;font-weight:700;color:var(--shu);border:1.5px solid var(--shu);border-radius:999px;padding:1px 10px;white-space:nowrap}
+.stmt{display:flex;align-items:center;min-height:6.4em;margin:8px 0;font-size:clamp(19px,5vw,25px);font-weight:700;line-height:1.55;text-wrap:pretty}
+.scale{display:flex;justify-content:space-between;align-items:center}
+.opt{flex:1 1 0;height:76px;display:grid;place-items:center;background:none;border:0;padding:0;border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.opt:focus-visible,.mini button:focus-visible{outline:3px solid var(--shu);outline-offset:-2px}
+.ov{position:relative;display:block;flex:none;width:var(--w,24px);height:calc(var(--w,24px)*1.36);border:2px solid var(--shu);border-radius:50%;overflow:hidden}
+.ov::after{content:"";position:absolute;inset:-1px;border-radius:50%;background:repeating-linear-gradient(120deg,var(--pencil) 0 3px,color-mix(in srgb,var(--pencil) 78%,var(--bg)) 3px 4px);transform:scale(0);opacity:var(--a,1);transition:transform .16s ease-out}
+.opt[data-v="3"],.opt[data-v="-3"]{--w:34px}
+.opt[data-v="2"],.opt[data-v="-2"]{--w:28px}
+.opt[data-v="1"],.opt[data-v="-1"]{--w:23px}
+.opt[data-v="0"]{--w:18px}
+.opt:hover .ov{background:var(--soft)}
+.opt[aria-checked=true] .ov,.mini button[aria-pressed=true] .ov,.ov.k{border-color:var(--pencil)}
+.opt[aria-checked=true] .ov::after,.mini button[aria-pressed=true] .ov::after,.ov.f::after{transform:scale(1)}
+.noanim .ov::after{transition:none}
+.ends3{display:grid;grid-template-columns:1fr auto 1fr;font-size:14px;margin-top:2px}
+.ends3 span:first-child{font-weight:700}
+.ends3 span:nth-child(2){color:var(--muted)}
+.ends3 span:last-child{text-align:right;font-weight:700}
+.qnav{display:flex;justify-content:space-between;gap:8px;margin-top:10px}
+.link{background:none;border:0;padding:8px 4px;min-height:44px;color:var(--shu);font-weight:700;cursor:pointer}
+.link:disabled{color:var(--muted);opacity:.5;cursor:default}
+.btn{min-height:48px;padding:10px 22px;border-radius:999px;border:2px solid var(--shu);background:none;color:var(--shu);font-weight:700;cursor:pointer}
+.btn.primary{background:var(--shu);color:var(--bg)}
+.btn.onband{border-color:#fff;color:#fff;text-decoration:none;display:inline-flex;align-items:center}
+.btn.onband.fill{background:#fff;color:var(--band)}
+.hacts{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn:focus-visible,.link:focus-visible,summary:focus-visible{outline:3px solid var(--shu);outline-offset:2px}
+.btn.onband:focus-visible{outline-color:#fff}
+.title2{margin:0 0 6px;font-size:clamp(28px,7vw,40px);font-weight:900;line-height:1.1}
+.lab{display:block;font-weight:700;margin:16px 0 6px}
+textarea{display:block;width:100%;min-height:140px;font:inherit;font-size:16px;line-height:1.6;padding:12px;border:2px solid var(--rule);border-radius:8px;background:var(--card);color:var(--ink);resize:vertical}
+textarea:focus{outline:none;border-color:var(--shu)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
+.hero{background:var(--band);color:#fff;padding-block:24px 30px}
+.types{margin:0 0 10px;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px;font-size:clamp(28px,7.4vw,50px);font-weight:900;line-height:1.2;letter-spacing:-.01em;text-wrap:balance}
+.types .x{font-weight:500;opacity:.75;font-size:.66em}
+.hl{margin:0;font-size:17px;max-width:46em}
+.hl b{font-weight:900}
+.hmeta{margin:10px 0 0;font-size:14px;opacity:.92}
+.h2{font-size:clamp(22px,5vw,28px);font-weight:900;margin:32px 0 14px;line-height:1.2}
+.phils{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.ph{border:2px solid var(--shu);border-radius:8px;padding:16px;background:var(--card);display:flex;flex-direction:column;gap:8px}
+.ph-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ph-name{margin:0;font-size:21px;font-weight:900;line-height:1.25}
+.ph-era{font-size:13px;color:var(--muted)}
+.ph-pct{font-size:32px;font-weight:900;line-height:1;color:var(--shu);white-space:nowrap;font-variant-numeric:tabular-nums}
+.ph-pct small{font-size:16px}
+.ph-d{margin:0}
+.chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:auto}
+.clab{font-size:13px;color:var(--muted)}
+.chip{font-size:13px;line-height:1.5;border:1.5px solid var(--shu);color:var(--shu);border-radius:999px;padding:1px 10px}
+.chip.diff{border:1.5px dashed var(--rule);color:var(--muted)}
+details>summary{cursor:pointer;color:var(--shu);font-weight:700;min-height:44px;display:flex;align-items:center;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"＋";margin-right:6px}
+details[open]>summary::before{content:"－"}
+.allph{display:grid;gap:4px;margin:4px 0 8px}
+.ap{display:grid;grid-template-columns:9.5em minmax(0,1fr) 3.2em;align-items:center;gap:10px;font-size:14px;line-height:1.3}
+.ap .b{height:10px;border-radius:5px;background:var(--soft);overflow:hidden}
+.ap .b i{display:block;height:100%;background:var(--shu)}
+.ap .v{text-align:right;font-variant-numeric:tabular-nums}
+.dom{margin:22px 0 0;background:var(--band);color:#fff;font-size:15px;font-weight:900;padding:7px 16px;border-radius:8px 8px 0 0}
+.rows{border:2px solid var(--shu);border-top:0;border-radius:0 0 8px 8px;background:var(--card)}
+.row{display:grid;grid-template-columns:minmax(0,1fr);padding:16px;border-top:1px solid var(--rule)}
+.row:first-child{border-top:0}
+.row-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px;margin-bottom:8px}
+.tname{margin:0;font-size:18px;font-weight:900}
+.tq{font-size:14px;color:var(--muted)}
+.ends{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);line-height:1.3}
+.ends span:last-child{text-align:right}
+.marks{display:flex;justify-content:space-between;align-items:center;height:40px;margin-top:2px}
+.mopts{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:4px;text-align:center;font-size:13px;line-height:1.3;color:var(--muted)}
+.mopt .ov{margin:0 auto 4px}
+.mopt.on{color:var(--ink);font-weight:700}
+.verdict{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 10px;margin-top:8px}
+.verdict b{font-size:22px;font-weight:900;color:var(--shu);line-height:1.35}
+.deg{font-size:14px;color:var(--muted)}
+.desc{margin:10px 0 0}
+.more p{margin:0 0 6px}
+.more .oname{margin:12px 0 2px;font-weight:700}
+.sub{font-size:13px;color:var(--muted)}
+.survey{font-size:14px;color:var(--muted);margin-top:10px!important}
+.end{padding-block:8px 56px}
+.note{font-size:14px;color:var(--muted);max-width:52em}
+.review{margin-top:18px;border-top:2px solid var(--shu)}
+#rlist{margin:0;padding-left:2.6em}
+#rlist li{padding:10px 0;border-top:1px solid var(--rule)}
+#rlist li::marker{color:var(--shu);font-weight:700}
+#rlist p{margin:0 0 2px}
+.mini{display:flex;justify-content:space-between;max-width:420px}
+.mini button{flex:1 1 0;height:44px;display:grid;place-items:center;background:none;border:0;padding:0;border-radius:8px;cursor:pointer}
+.mini button[data-v="3"],.mini button[data-v="-3"]{--w:22px}
+.mini button[data-v="2"],.mini button[data-v="-2"]{--w:19px}
+.mini button[data-v="1"],.mini button[data-v="-1"]{--w:16px}
+.mini button[data-v="0"]{--w:13px}
+@media(min-width:600px){.opt[data-v="3"],.opt[data-v="-3"]{--w:46px}.opt[data-v="2"],.opt[data-v="-2"]{--w:38px}.opt[data-v="1"],.opt[data-v="-1"]{--w:30px}.opt[data-v="0"]{--w:24px}.opt{height:92px}.sheet{padding:22px 26px 18px 40px}.sheet::before{left:13px}.view:not(.rview){padding-top:28px}}
+@media(min-width:760px){.row{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:32px;padding:20px 24px}.row-h{grid-column:1/-1}.desc{margin-top:0}}
+@media(max-width:759px){.phils{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.ov::after,.prog i{transition:none}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap bar-in"><p class="brand">哲学タイプ診断</p><span class="count" id="count"></span></div>
+  <div class="prog"><i id="progfill"></i></div>
+</header>
+<main>
+  <section id="v-quiz" class="view">
+    <div class="wrap">
+      <div id="lead" class="lead">
+        <h1 class="title">あなたは何主義？</h1>
+        <p>「はい」〜「いいえ」の7段階で答える<span id="nq">159</span>問。答え終わると、17のテーマでのあなたの立ち位置と、考え方が近い哲学者がわかるよ。正解はないから直感でOK！ 途中でやめても、同じブラウザなら続きから再開できるよ。答えはこの端末の中にだけ保存されて、どこにも送信されないから安心してね。</p>
+      </div>
+      <p id="resumed" class="lead-s" hidden>前回の続きからだよ！</p>
+      <div class="sheet">
+        <div class="sheet-head"><span class="qno" id="qno">Q1</span><span class="tag" id="qtag"></span></div>
+        <p class="stmt" id="qtext"></p>
+        <div class="scale" id="scale" role="radiogroup" aria-labelledby="qtext">
+          <button type="button" class="opt" role="radio" data-v="3" aria-label="はい（強く）" aria-checked="false"><span class="ov"></span></button>
+          <button type="button" class="opt" role="radio" data-v="2" aria-label="はい" aria-checked="false"><span class="ov"></span></button>
+          <button type="button" class="opt" role="radio" data-v="1" aria-label="ややはい" aria-checked="false"><span class="ov"></span></button>
+          <button type="button" class="opt" role="radio" data-v="0" aria-label="どちらとも" aria-checked="false"><span class="ov"></span></button>
+          <button type="button" class="opt" role="radio" data-v="-1" aria-label="ややいいえ" aria-checked="false"><span class="ov"></span></button>
+          <button type="button" class="opt" role="radio" data-v="-2" aria-label="いいえ" aria-checked="false"><span class="ov"></span></button>
+          <button type="button" class="opt" role="radio" data-v="-3" aria-label="いいえ（強く）" aria-checked="false"><span class="ov"></span></button>
+        </div>
+        <div class="ends3" aria-hidden="true"><span>はい</span><span>どちらとも</span><span>いいえ</span></div>
+      </div>
+      <div class="qnav"><button type="button" class="link" id="back">← 前の質問</button><button type="button" class="link" id="peek">ここまでの結果を見る →</button></div>
+    </div>
+  </section>
+
+  <section id="v-memo" class="view" hidden>
+    <div class="wrap">
+      <div class="sheet">
+        <h2 class="title2">おつかれさま！</h2>
+        <p>全部答え終わったよ。最後に、答えながら思ったことや、迷った質問のことを自由に書いてね（書かなくても大丈夫）。</p>
+        <label class="lab" for="memo">思ったこと（自由回答）</label>
+        <textarea id="memo" placeholder="例：自由意志の質問がいちばん迷った…"></textarea>
+        <div class="actions"><button type="button" class="btn primary" id="toResult">結果を見る</button><button type="button" class="link" id="memoBack">← 最後の質問にもどる</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="v-result" class="view rview" hidden>
+    <div id="resDyn"></div>
+    <div class="res-wrap end">
+      <h2 class="h2">感想メモ</h2>
+      <label class="lab" for="memo2">思ったこと（自由回答）</label>
+      <textarea id="memo2" placeholder="答えながら思ったことを、自由にどうぞ"></textarea>
+      <div class="actions"><button type="button" class="btn primary" data-act="copy">結果をテキストでコピー</button><button type="button" class="btn" data-act="reset" id="resetBtn">最初からやり直す</button></div>
+      <p class="note" id="copied" aria-live="polite"></p>
+      <textarea id="copybox" readonly hidden aria-label="コピー用の結果テキスト"></textarea>
+      <p class="note">コピーした結果は、友だちに送ったり、メモに残したりできるよ！</p>
+      <p class="note">※ 回答と感想メモは、この端末のブラウザの中にだけ保存されて、どこにも送信されないよ。消したいときは「最初からやり直す」を押してね。</p>
+      <details class="review" id="review"><summary>回答一覧（ここで答えを変えられるよ）</summary><ol id="rlist"></ol></details>
+      <p class="note">※ 哲学者アンケートは <a href="https://survey2020.philpeople.org/survey/results/all">PhilPapers Survey 2020</a>（英語圏を中心とした哲学者1785人が回答）の、その立場を受け入れる・寄りと答えた人の割合だよ。複数回答や「その他」があるから合計は100%にならないし、多数派が正解ってわけでもないからね！</p>
+      <p class="note">※ 一致度は、各哲学者のよく知られた立場と、あなたの回答の向きがどれだけそろっているかの目安だよ。哲学者の立場は解釈が分かれるところも多いから、話のタネとして楽しんでね。</p>
+    </div>
+  </section>
+</main>
+<noscript><p class="wrap">この診断はJavaScriptを使っているよ。ブラウザの設定でJavaScriptをオンにしてね。</p></noscript>
+<script>
+{
+const DOMAINS=[["world","存在と世界"],["self","心と自己"],["know","知ること"],["good","善と悪"],["life","生き方"],["society","社会と美"]];
+
+const THEMES=[
+{id:"real",d:"world",type:"bi",name:"世界の実在",q:"世界は、人間と関係なく存在する？",
+neg:{name:"反実在論",desc:"私たちが知れるのは「人間に見えている世界」までで、世界そのものの姿は語れない…って考え方だよ。バークリーの観念論（存在するとは知覚されること）や、科学理論を予測のための道具とみる道具主義もこの仲間なんだ。"},
+pos:{name:"実在論",desc:"人間がいてもいなくても世界はちゃんとあって、科学はその本当の姿に少しずつ近づいてる、って考え方だよ。いちばん素朴な実感に近い立場で、ラッセルやポパーもこっち側なんだ。"},
+mid:{desc:"世界があること自体は疑わないけど、それを「そのまま」知れるかはちょっと微妙…って感じかな。カントの「私たちに見えるのは現象で、物自体は知りえない」っていう考え方にけっこう近いかも！"},
+survey:"科学的実在論 72% ／ 科学的反実在論 15%",
+items:[
+[1,"人間が一人もいなくなっても、世界はそのまま存在し続ける"],
+[-1,"科学の理論は、世界の本当の姿というより、うまく予測するための道具だ"],
+[1,"電子やクォークのような目に見えないものも、本当に存在している"],
+[-1,"「存在する」とは、結局「誰かに知覚される」ということだ"],
+[1,"科学は、世界の本当の姿を少しずつ明らかにしている"],
+[-1,"私たちが知ることができるのは「人間に見えている世界」だけで、世界そのものの姿は知りえない"],
+[1,"世界のあり方は、人間がそれをどう考えるかとは関係なく決まっている"],
+[-1,"何をひとまとまりの「もの」とみなすかは、人間の言葉や文化が決めている面が大きい"]]},
+
+{id:"abs",d:"world",type:"bi",name:"数と抽象",q:"数や「正義そのもの」は存在する？",
+neg:{name:"唯名論",desc:"あるのは一つ一つの具体的なものだけで、「数そのもの」や「赤さそのもの」みたいな抽象的な存在はない、って考え方だよ。数学も、人間が作った道具や記号のルールだと見ることが多いんだ。ホッブズやミルがこっち側だね。"},
+pos:{name:"プラトニズム",desc:"数や図形、正義や美は、物とは違うかたちで本当に存在してる、って考え方だよ。数学者は定理を作るんじゃなくて発見してる、ってことになるね。プラトンが元祖で、数学者のゲーデルもこの立場だったんだって！"},
+mid:{desc:"数学の真理はなんとなく客観的な気がするけど、「じゃあ、どこにあるの？」と聞かれると困る…って感じかな。アリストテレスみたいに「普遍は個物の中にある」と考える道もあるよ。"},
+survey:"プラトニズム 38% ／ 唯名論 42%",
+items:[
+[1,"数学の定理は、人間が発明したものではなく、発見されたものだ"],
+[-1,"数とは、人間が物を数えるために作った便利な道具にすぎない"],
+[1,"人類が滅んでも、「素数は無限にある」ということは真実であり続ける"],
+[-1,"数学は、決められたルールに従って記号を操作するゲームのようなものだ"],
+[1,"数や図形は、物とは違うかたちで、でも確かに存在している"],
+[-1,"「赤さそのもの」なんてものはなく、あるのは一つ一つの赤い物だけだ"],
+[1,"「正義」や「美」には、一つ一つの具体例を超えた、それ自体の本当の姿がある"],
+[-1,"宇宙に物が何ひとつなかったら、数というものも存在しない"]]},
+
+{id:"time",d:"world",type:"bi",name:"時間",q:"過去や未来は存在する？",
+neg:{name:"現在主義",desc:"本当に存在するのは「今」だけで、過去はもうないし、未来はまだない、って考え方だよ。日常の感覚にいちばん近くて、時間は本当に流れていると考えるんだ。アリストテレスにも、こういう発想が見られるよ。"},
+pos:{name:"永久主義",desc:"過去も現在も未来も同じように実在していて、「今」が特別なのは自分がそこにいるからにすぎない、って考え方だよ。全部の時間が一枚の地図みたいに広がってる「ブロック宇宙」のイメージだね。相対性理論と相性がいいって言われてるんだ。"},
+mid:{desc:"過去はもう確定してるけど未来はまだない…みたいな感覚なら、「成長ブロック説」っていう立場が近いかも。宇宙のブロックが、一瞬ごとに少しずつ伸びていくイメージだよ。"},
+survey:"永久主義 40% ／ 現在主義 18% ／ 成長ブロック説 17%",
+items:[
+[1,"過去や未来も、今と同じように実在している（ただ「今ここ」にないだけ）"],
+[-1,"本当に存在するのは「今」だけで、過去はもうないし、未来はまだない"],
+[1,"「今」が特別に感じられるのは、たまたま私たちがそこにいるからにすぎない"],
+[-1,"時間が流れているという感覚は、世界の本当の性質をとらえている"],
+[1,"時間は流れているのではなく、すべての時刻が地図のように並んでいるだけだ"],
+[-1,"未来の出来事は、まだどこにも存在していない"],
+[1,"恐竜が生きていた時代も、ある意味では今もどこかに「ある」"],
+[-1,"過去の出来事は、もう記憶や記録の中にしか残っていない"]]},
+
+{id:"god",d:"world",type:"multi",name:"神",q:"神は存在する？",
+opts:{
+T:{name:"有神論",desc:"この世界を生み出したり支えたりしている、神のような存在があると考える立場だよ。特定の宗教を信じているかどうかとは別に、「宇宙に意図を感じる」っていう直感もここに入るんだ。アクィナスやデカルト、ライプニッツはこっち側だね。"},
+N:{name:"無神論",desc:"神は存在しない、と考える立場だよ。「信じる理由がないなら、いないと考えるのが自然」とか、「理不尽な苦しみは、全能で善い神と両立しない」とかが代表的な理由なんだ。ニーチェやサルトル、デネットあたりが有名だね。"},
+A:{name:"不可知論",desc:"神がいるかどうかは人間には確かめようがない、って判断を保留する立場だよ。古代のプロタゴラスも「神々がいるかどうか、私には知りえない」って言ってたし、ヒュームやミルもこれに近いんだ。"}},
+survey:"有神論 19% ／ 無神論 67% ／ 不可知論などの「その他」15%",
+items:[
+[{T:1,N:-1},"この宇宙には、それを生み出したり支えたりしている何か（神のような存在）がある"],
+[{N:1,T:-1,A:-0.5},"神は存在しないと、わりと自信を持って言える"],
+[{A:1},"神がいるかどうかは、人間には原理的に確かめようがない"],
+[{T:1,N:-1},"祈りや宗教的な体験には、気のせい以上の何かがあると思う"],
+[{N:1,T:-1},"世界にこれほど理不尽な苦しみがあることは、全能で善い神がいないことを示していると思う"],
+[{A:1,T:-0.5,N:-0.5},"神がいるともいないとも決められないので、判断を保留している"],
+[{T:1,N:-0.5},"宇宙が存在すること自体に、何かの意図を感じる"],
+[{N:1,A:-0.5},"神を信じる理由がない以上、いないと考えるのが自然だ"],
+[{A:0.5,N:-0.5},"科学がどれだけ進んでも、神がいるかどうかに決着はつかない"],
+[{A:-1},"神がいるかいないかについて、自分の中ではもう答えが出ている"]]},
+
+{id:"mind",d:"self",type:"bi",name:"心と身体",q:"心は脳の働きにすぎない？",
+neg:{name:"二元論",desc:"心（魂）は、身体や脳とは別の何かだ、っていう考え方だよ。デカルトの「心と身体は別の実体」が有名で、現代でも「赤を見たときの“この感じ”は物理では説明しきれない」っていう意識のハードプロブレムを重く見る人は、こっち寄りになるんだ。"},
+pos:{name:"物理主義",desc:"心は脳という物質の働きで、脳の仕組みが全部わかれば意識も説明できる、っていう考え方だよ。デネットが代表選手で、同じ働きをする機械にも心が生まれうると考えることが多いんだ（機能主義）。"},
+mid:{desc:"心は脳の働きっぽいけど、意識の「感じ」だけは物理ではとらえきれない…みたいな感覚かな。性質二元論とか、物にもごく小さな心があるっていう汎心論とか、その中間を考える哲学者もけっこういるんだよ。"},
+survey:"物理主義 52% ／ 非物理主義 32%",
+items:[
+[1,"心は、脳という物質の働きにすぎない"],
+[-1,"心や魂は、身体とは別の何かとして存在する"],
+[1,"脳の仕組みが全部わかれば、意識のことも全部説明できるはずだ"],
+[-1,"赤い色を見たときの「この感じ」は、物理的な説明ではとらえきれない"],
+[1,"脳とまったく同じ働きをする機械を作れば、それにも心が宿る"],
+[-1,"身体がなくなっても、心（魂）が残る可能性はある"],
+[1,"死んで脳が止まれば、心も完全に消える"],
+[-1,"見た目も脳の働きも人間とまったく同じなのに、内側では何も感じていない存在がいてもおかしくはない"]]},
+
+{id:"self",d:"self",type:"bi",name:"自己",q:"「本当の自分」はある？",
+neg:{name:"束説・無我説",desc:"「自分」っていう変わらない実体はなくて、記憶や感情や思考の流れにつけた名前にすぎない、って考え方だよ。ヒュームの「自己は知覚の束」や、仏教の「無我」がまさにこれなんだ。パーフィットは「同じ自分であり続けるかどうかは、思うほど重要じゃない」とまで言ってるよ。"},
+pos:{name:"実体的自己観",desc:"記憶や性格がどう変わっても、それを経験している「本当の自分」がずっと存在してる、って考え方だよ。デカルトの「我思う、ゆえに我あり」の“我”や、魂の考え方に近いんだ。"},
+mid:{desc:"自分は確かにいるけど、それは記憶や性格のつながりのこと…って感覚なら、ロックの「心理的連続説」が近いかも。記憶がつながっている限り同じ人だ、って考え方だよ。"},
+survey:"心理的連続説 44% ／ 生物学的説 19% ／ さらなる事実説（魂など）15%。テレポートで本人は生き残る 35% ／ 死ぬ 40%",
+items:[
+[1,"どんなに性格や記憶が変わっても、変わらない「本当の自分」の核がある"],
+[-1,"「自分」とは、記憶や感情や思考の集まりにつけた名前にすぎない"],
+[1,"テレポート（身体を分解し、別の場所で完全に組み立て直す）で出てきた人は、自分ではなく「そっくりな別人」だ"],
+[-1,"心の中をどれだけ見つめても、「自分そのもの」は見つからない"],
+[1,"考えたり感じたりしている「主体」としての自分は、確かに存在している"],
+[-1,"記憶がすべて消えたら、それはもう前の自分とは別人だ"],
+[1,"10年前の自分と今の自分は、まったく同じ一人の人間だと言い切れる"],
+[-1,"自分が「同じ自分」であり続けるかどうかは、思われているほど大事なことではない"]]},
+
+{id:"fw",d:"self",type:"quad",name:"自由意志",q:"人は自由に選んでいる？",
+quads:{
+pp:{name:"両立論",desc:"世界が因果で決まっていても、強制されずに自分の望みどおりに行動できるなら、それは十分「自由」で、責任もある…って考え方だよ。ストア派やホッブズ、ヒューム、デネットがこの立場で、現代の哲学者の間ではいちばんの多数派なんだって！"},
+pn:{name:"ハード決定論",desc:"すべては前の出来事で決まっているから、本当の意味での自由意志はないし、厳密には誰にも責任はない、って考え方だよ。スピノザは「人が自分を自由だと思うのは、行動の原因を知らないからだ」って言ってるんだ。"},
+np:{name:"リバタリアン自由意志論",short:"自由意志論",desc:"世界は完全には決まっていなくて、人は本当に別の選択もできた。だからこそ自由で責任がある、って考え方だよ（政治のリバタリアニズムとは別物！）。エピクロスの原子の「逸れ」や、サルトルの「人間は自由の刑に処されている」が有名なんだ。"},
+nn:{name:"自由意志懐疑論",desc:"世界が決まっていても、偶然に左右されていても、どっちにしろ本当の自由意志はない…って考え方だよ。偶然で決まった行動も「自分で選んだ」とは言いにくいからね。現代だとペレブームの「ハードな非両立論」がこれに近いんだ。"}},
+center:{name:"まだ決めかねてる",desc:"決定論にも自由意志にも、まだはっきり傾いてないみたい。この問題は2000年以上決着がついてない超難問だから、迷うのはすごく自然なことだよ。"},
+survey:"両立論 59% ／ リバタリアン自由意志論 19% ／ 自由意志はない 11%",
+items:[
+[{det:1},"宇宙で起きることは、すべてそれ以前の出来事によって決まっている"],
+[{resp:1},"人は自分の行動に、本当の意味で責任がある"],
+[{det:-1},"未来はまだ決まっていなくて、本当にいくつもの可能性に開かれている"],
+[{resp:-1},"犯罪者を責めるのは、結局は生まれや環境という運の悪さを責めているのと同じだ"],
+[{det:1},"時間を巻き戻して完全に同じ状況にしたら、人は必ず同じ選択をする"],
+[{resp:-1},"「自分で選んだ」という感覚は、脳が後から作り出した錯覚にすぎない"],
+[{det:-1},"世界には、原理的に予測できない本当の偶然がある"],
+[{resp:1},"どんな環境で育った人でも、最終的にどう生きるかは本人の選択だ"],
+[{det:1},"人の選択も、脳の物理的な状態によって完全に決まっている"],
+[{resp:1},"人は、自分の意志で何をするかを本当に選べる"],
+[{det:-1},"同じ状況に置かれても、人は本当に別の選択をすることができる"],
+[{resp:-1},"人が何をするかは、結局のところ本人にはどうしようもない要因で決まっている"]]},
+
+{id:"nat",d:"self",type:"bi",name:"人間の本性",q:"人はもともと善い？",
+neg:{name:"性悪説",desc:"人は放っておくと自分の利益を優先しがちだから、教育やルールでそれを正していく必要がある、って考え方だよ。荀子の「性悪説」や、ホッブズの「万人の万人に対する闘争」が有名なんだ。荀子の「悪」は「欲望のまま」くらいの意味で、人を見下してるわけじゃないんだよ。"},
+pos:{name:"性善説",desc:"人にはもともと他人を思いやる心があって、悪くなるのは環境のせいだ、って考え方だよ。孟子は「井戸に落ちそうな子どもを見たら、誰でも思わず助けようとする」っていう例で説明してるんだ。ルソーも、人は本来善いのに社会が堕落させる、と考えたよ。"},
+mid:{desc:"人には善い面も悪い面もあって、どう育つかしだい…って感じかな。孔子の「性相近し、習い相遠し」（生まれつきはみんな似たようなもので、習慣で差がつく）っていう言葉がまさにこれだね。"},
+items:[
+[1,"人は生まれつき、他人を思いやる心を持っている"],
+[-1,"人は放っておくと、自分の利益のために争い合う"],
+[1,"井戸に落ちそうな子どもを見たら、誰でも思わず助けようとするはずだ"],
+[-1,"人が良いことをするのは、しつけや教育や法律があるからだ"],
+[1,"人が悪いことをするのは、たいてい環境や社会のせいだ"],
+[-1,"親切な行動も、突き詰めれば自分のためにやっている"],
+[1,"ルールや罰がなくても、人はだいたい協力し合ってうまくやっていける"],
+[-1,"絶対に誰にもバレないなら、たいていの人は悪いことをする"]]},
+
+{id:"src",d:"know",type:"bi",name:"知識の源",q:"知識は経験から？ それとも理性から？",
+neg:{name:"経験論",desc:"知識はすべて経験から始まる、って考え方だよ。生まれたばかりの心は白紙で、見たり聞いたりしたことが知識になっていくんだ。ロック、バークリー、ヒュームのイギリス経験論が代表で、「実験で確かめる」っていう科学の精神にもつながってるよ。"},
+pos:{name:"合理論",desc:"経験に頼らなくても、理性だけで確実にわかることがある、って考え方だよ。数学や論理がその代表例で、デカルト、スピノザ、ライプニッツの大陸合理論が有名なんだ。人には生まれつきの観念がある、と考えることも多いよ。"},
+mid:{desc:"経験も理性もどっちも必要…って感じかな。まさにカントが「内容なき思考は空虚であり、概念なき直観は盲目である」って言って、経験論と合理論をまとめようとしたんだよ！"},
+survey:"経験論 44% ／ 合理論 34%",
+items:[
+[-1,"人の知識は、すべて経験から始まる"],
+[1,"経験に頼らず、頭で考えるだけで世界について正しいことがわかる場合がある"],
+[-1,"生まれたばかりの心は、何も書かれていない白紙のようなものだ"],
+[1,"人間には、生まれつき備わっている知識や考え方の枠組みがある"],
+[-1,"どんなにきれいな理屈でも、実験や観察で確かめるまでは信用できない"],
+[1,"感覚はあてにならないことが多いので、本当に頼れるのは理性だ"],
+[-1,"実際に確かめようのないことについて考えても、あまり意味がない"],
+[1,"数学や論理の確かさは、経験から得られたものではない"]]},
+
+{id:"skep",d:"know",type:"bi",name:"確実性",q:"私たちは何かを本当に「知って」いる？",thr:0.25,
+neg:{name:"懐疑主義",desc:"私たちが「知ってる」と思ってることも、実は確実じゃないかもしれない…と疑い続ける立場だよ。古代のピュロンや、「胡蝶の夢」の荘子、ヒュームが有名なんだ。判断を保留することで、かえって心が穏やかになるって考えもあるよ。"},
+pos:{name:"基礎づけ主義",desc:"絶対に疑えない確かな土台があって、そこから知識を積み上げていける、って考え方だよ。デカルトがすべてを疑った末に「我思う、ゆえに我あり」を土台にしたのが代表例なんだ。「手が二本あるのは当たり前」っていうムーアの常識哲学も、懐疑論に強く反対してるよ。"},
+mid:{name:"可謬主義",desc:"人間はいろんなことを本当に知ってるけど、それでも間違ってる可能性はいつも残ってる、って考え方だよ。パースやポパーがこの立場で、「科学は間違いを直しながら進んでいく」っていう現代的な知識観にいちばん近いんだ。"},
+survey:"外の世界について…懐疑的でない実在論 80% ／ 懐疑論 5% ／ 観念論 7%",
+items:[
+[-1,"今この瞬間が夢ではないと、完全に証明することはできない"],
+[1,"少なくとも「今、自分が考えている」ということだけは絶対に疑えない"],
+[-1,"私たちが「知っている」と思っていることの多くは、実は思い込みかもしれない"],
+[1,"「自分には手が二本ある」のような当たり前のことを哲学的に疑うのは、ナンセンスだ"],
+[-1,"自分以外の人にも本当に心があるのかどうかは、確かめようがない"],
+[1,"しっかりした土台から積み上げていけば、確実な知識の体系をつくれる"],
+[-1,"絶対に確実だと言い切れることなんて、ほとんどない"],
+[1,"人間は、世界について多くのことを本当に知っている"]]},
+
+{id:"truth",d:"know",type:"bi",name:"真理",q:"真理はひとつ？",
+neg:{name:"真理の相対主義",desc:"何が真理かは、人や文化や目的との関係で決まる、って考え方だよ。プロタゴラスの「人間は万物の尺度である」が元祖で、ジェームズのプラグマティズム（役に立つ考えが真）や、ニーチェの「事実なるものはなく、あるのは解釈だけ」もこの仲間なんだ。"},
+pos:{name:"真理の客観主義",desc:"真理とは考えが現実とぴったり一致していることで、みんながどう思うかとは関係なく決まる、って考え方だよ（対応説）。アリストテレスの「あるものを、あると言うのが真」が原点で、ラッセルやポパーもこっち側なんだ。"},
+mid:{desc:"真理そのものは客観的だと思うけど、人間はそれを自分の見方を通してしか語れない…みたいな感覚かな。わりとバランスのとれた立ち位置だと思うよ。"},
+survey:"対応説 51% ／ デフレ説 25% ／ 認識説 10%",
+items:[
+[1,"正しいかどうかは、みんながどう思うかとは関係なく決まる"],
+[-1,"何が真実かは、人や文化によって違う"],
+[1,"真理とは、考えが現実とぴったり一致していることだ"],
+[-1,"役に立つ考えこそが、正しい考えだ"],
+[1,"誰にも知られていないけれど真実であること、というのはたくさんある"],
+[-1,"「絶対的な真理」を追い求めるより、うまくいく答えを見つけるほうが大事だ"],
+[1,"意見が対立したとき、どちらかが正しくてどちらかが間違っていることが多い"],
+[-1,"どんな事実も、何かしらの見方や解釈を通してしか語れない"]]},
+
+{id:"eth",d:"good",type:"multi",name:"善悪の決め方",q:"正しい行いは、何で決まる？",
+opts:{
+C:{name:"帰結主義",desc:"行為の正しさは、その結果でみんながどれだけ幸せになるかで決まる、って考え方だよ。代表はベンサムやミルの功利主義で、「最大多数の最大幸福」が合言葉なんだ。現代では、動物の苦しみまで計算に入れるピーター・シンガーが有名だよ。"},
+D:{name:"義務論",desc:"結果がどうであれ、守るべきルールや義務がある、って考え方だよ。カントの「人を単なる手段として扱ってはならない」が代表で、嘘をつかない、約束を守る、人の権利を侵さない…といったことは結果より大事だと考えるんだ。"},
+V:{name:"徳倫理",desc:"「何をすべきか」より「どんな人間であるべきか」を大事にする考え方だよ。アリストテレスが元祖で、勇気や思いやりや節度みたいな人柄の良さを身につけて、状況に応じて賢く判断できる人を目指すんだ。孔子の思想も徳倫理に近いと言われてるよ。"}},
+none:{name:"道徳的個別主義？",desc:"どの理論にもピンときてないみたい！ 道徳はルールにも計算にもまとめられなくて、一つ一つの状況ごとに判断するしかない…と考える「道徳的個別主義」っていう立場もあるんだよ。"},
+survey:"徳倫理 37% ／ 義務論 32% ／ 帰結主義 31%。トロッコ問題で切り替える 63%",
+items:[
+[{C:1,D:-0.5},"5人を助けるために、トロッコの進路を切り替えて1人を犠牲にするのはしかたない"],
+[{D:1,C:-1},"健康な1人の臓器で5人の患者を救えるとしても、その1人を犠牲にするのは絶対に許されない"],
+[{V:1,C:-0.5,D:-0.5},"道徳で一番大事なのは、どんなルールに従うかより、どんな人間になるかだ"],
+[{C:1,D:-1},"嘘も、結果的にみんなが幸せになるならついていい"],
+[{D:1,C:-0.5},"人を目的のための道具としてだけ扱うことは、どんな理由があっても間違っている"],
+[{V:1},"迷ったときは「尊敬するあの人ならどうするか」を考えるのがいちばんいい"],
+[{C:1,V:-0.5,D:-0.5},"全員の幸福を平等に数えるべきで、自分の家族や友人を特別扱いするのは本当は正しくない"],
+[{D:1,C:-1},"約束は、破ったほうが少しだけ全体の得になるとしても守るべきだ"],
+[{V:1,D:-0.5},"正しいことをしても、嫌々やっているならその人はまだ立派とはいえない"],
+[{C:1,D:-0.5,V:-0.5},"行為の良し悪しは、結局その結果で決まる"],
+[{D:1,C:-0.5},"人には、どんなに大きな利益のためでも侵してはならない権利がある"],
+[{V:1,C:-0.5,D:-0.5},"道徳の正解は、ルールや計算式ではなく、経験を積んだ人の判断の中にある"],
+[{V:-1},"人柄がどうであれ、正しい行動さえしていれば道徳的には十分だ"],
+[{V:-1,C:0.5,D:0.5},"何をすべきかは、きちんとしたルールや原理に当てはめれば誰でも判断できるはずだ"]]},
+
+{id:"meta",d:"good",type:"bi",name:"道徳の客観性",q:"善悪に「正解」はある？",
+neg:{name:"道徳的反実在論",desc:"善悪は世界に客観的にある事実じゃなくて、人間の感情や文化や約束ごとから生まれたもの、って考え方だよ。ヒュームの「道徳は理性ではなく感情の問題」が有名で、文化ごとに違うと考える相対主義や、「〜すべき」は気持ちの表明だとする情動主義もこの仲間なんだ。"},
+pos:{name:"道徳的実在論",desc:"「理由なく人を苦しめるのは悪い」みたいな道徳的な真理は、誰がどう思おうと成り立つ、って考え方だよ。プラトンからカント、現代のパーフィットまで、道徳にも数学みたいな正解があると考える哲学者はけっこう多いんだ。"},
+mid:{desc:"善悪には何かしら確かなものがある気がするけど、それが文化を超えた「事実」かと言われると迷う…って感じかな。人々の合意から道徳を組み立てる「構成主義」みたいな中間の立場もあるよ。"},
+survey:"道徳的実在論 62% ／ 道徳的反実在論 26%",
+items:[
+[1,"「理由もなく人を苦しめるのは悪い」というのは、誰がどう思おうと真実だ"],
+[-1,"善い・悪いというのは、結局その人の好き嫌いや感情の表れだ"],
+[1,"道徳的な問題にも、数学の問題のように正解がある"],
+[-1,"文化が違えば、何が正しいかも違って当然だ"],
+[1,"ある時代の人々がみんな奴隷制を正しいと思っていたとしても、それはやっぱり間違っていた"],
+[-1,"道徳は、社会がうまく回るように人間が作り出したルールだ"],
+[1,"人類の道徳は、歴史の中で本当の意味で進歩してきた"],
+[-1,"「〜すべき」という言葉に、客観的な根拠なんてない"]]},
+
+{id:"stoic",d:"life",type:"bi",name:"幸福",q:"幸せって、なんだろう？",
+neg:{name:"快楽主義",desc:"人生で一番大切なのは、楽しさや心地よさ（快）をたくさん味わって、苦痛を減らすことだ、って考え方だよ。エピクロスは、ぜいたくより「心の平穏」こそ最高の快楽だって言ってたんだ。ベンサムやミルの功利主義も、この快楽主義がベースになってるよ。"},
+pos:{name:"ストア主義",desc:"自分でコントロールできないことに心を乱されず、立派に生きること（徳）こそが幸福だ、って考え方だよ。エピクテトスやマルクス・アウレリウスが有名で、「人を悩ませるのは出来事ではなく、出来事についての考えだ」っていう発想は、今の認知行動療法にもつながってるんだって！"},
+mid:{desc:"楽しさも大事だけど、それだけじゃ幸せとは言えない…って感じかな。アリストテレスは、徳のある活動に喜びがともなうのが本当の幸福（エウダイモニア）だと考えてたんだ。"},
+survey:"幸福の中身は…客観的リスト説 53% ／ 欲求充足説 19% ／ 快楽説 13%。経験機械に入る 13% ／ 入らない 77%",
+items:[
+[-1,"人生の目的は、楽しいことや心地よいことをできるだけ多く味わうことだ"],
+[1,"自分ではどうにもできないことで悩むのは、時間のムダだ"],
+[-1,"どんなに立派な人生でも、楽しさがまったくなければ良い人生とは言えない"],
+[1,"つらい出来事も、受け止め方しだいで苦しみではなくなる"],
+[-1,"結局のところ、人は気持ちいいことを求めて、嫌なことを避けるように生きている"],
+[1,"お金や名声より、立派な人間であることのほうが幸福にとって大事だ"],
+[-1,"我慢して何かを成し遂げるより、今を楽しむことのほうが大事だ"],
+[1,"怒りや嫉妬のような感情には、できるだけ振り回されないようにするべきだ"],
+[1,"一生ずっと最高に幸せな夢を見続けられる機械があっても、私は入りたくない"],
+[-1,"幸せかどうかは、本人が幸せだと感じているかどうかで決まる"]]},
+
+{id:"mean",d:"life",type:"multi",name:"人生の意味",q:"人生に意味はある？",
+opts:{
+O:{name:"目的論",desc:"人間にはもともと果たすべき目的や、良い生き方の「正解」がある、って考え方だよ。アリストテレスは人間らしい能力を発揮して生きることに、アクィナスは神とのつながりに、孔子は人としての道に、人生の意味を見いだしたんだ。"},
+X:{name:"実存主義",desc:"人生にあらかじめ決まった意味はない。だからこそ、自分で選んで意味を作っていくんだ、って考え方だよ。サルトルの「実存は本質に先立つ」が合言葉で、意味のない世界に反抗しながら生きるカミュの「不条理」の哲学も近いんだ。"},
+N:{name:"ニヒリズム",desc:"人生には客観的な意味も目的もない、と見つめる立場だよ。「人生は苦しみだ」と説いたショーペンハウアーの厭世主義が代表格なんだ。ちなみにニーチェは、ニヒリズムをただ受け入れるんじゃなくて、乗り越えようとした人なんだよ。"}},
+none:{name:"どれもしっくりこない",desc:"どの答えもしっくりきてないみたい。「人生の意味」っていう問いの立て方そのものを疑ってみる、っていう道もあるよ。"},
+survey:"主観的な意味がある 33% ／ 客観的な意味がある 32% ／ 意味はない 16%",
+items:[
+[{O:1,X:-1},"人間には、生まれつき果たすべき目的や役割がある"],
+[{X:1,O:-1},"人生の意味は、誰かに与えられるものではなく、自分で作るものだ"],
+[{N:1,O:-1,X:-0.5},"結局のところ、人生に意味なんてない"],
+[{O:1,X:-0.5},"本人がどう思うかとは関係なく、良い生き方と悪い生き方がある"],
+[{X:1,N:-0.5,O:-0.5},"意味がないと分かったうえで、それでも自分で価値を選んで生きることに尊さがある"],
+[{N:1,O:-1},"宇宙全体から見れば、人間のすることはすべて無意味だ"],
+[{O:1,N:-0.5},"人生の意味は、自分を超えた大きなもの（自然、歴史、神など）とのつながりの中にある"],
+[{X:1,O:-1},"人は、まず存在して、それから自分が何者になるかを選んでいく"],
+[{N:1,X:-1},"「自分で意味を作る」なんて、結局は自分をごまかしているだけだ"],
+[{O:1,N:-1},"どんな人の人生にも、その人にしか果たせない意味がある"],
+[{N:1,O:-0.5},"どうせ最後はすべて消えてしまうのだから、本当に大切なことなんてない"],
+[{X:1},"自分の生き方の責任は、最終的に自分ひとりが負うしかない"],
+[{N:-1,O:0.5},"生きていることには、それだけで価値がある"]]},
+
+{id:"pol",d:"society",type:"multi",name:"正義と社会",q:"公正な社会って、どんなもの？",
+opts:{
+L:{name:"リバタリアニズム",desc:"一人ひとりの自由と、自分で手に入れたものを持つ権利を何より大切にする考え方だよ。国の役割は治安や契約を守るくらいの最小限でいい、と考えるんだ。ノージックの『アナーキー・国家・ユートピア』が代表作で、ロックの自然権の考え方がルーツにあるよ。"},
+E:{name:"リベラル平等主義",desc:"自由はもちろん大事だけど、生まれた家庭や運による格差は社会で正していくべきだ、って考え方だよ。代表はロールズの『正義論』で、「自分がどんな立場に生まれるかわからない状態（無知のヴェール）で選ぶなら、どんな社会がいい？」っていう思考実験が有名なんだ。"},
+C:{name:"共同体主義",desc:"人はただの「個人」じゃなくて、家族や地域や伝統の中で育った存在だから、共同体で共有される「善い生き方」を大切にすべきだ、って考え方だよ。サンデルやマッキンタイアが代表で、アリストテレスや孔子の思想にもルーツがあるんだ。"}},
+survey:"平等主義 44% ／ 共同体主義 27% ／ リバタリアニズム 13%",
+items:[
+[{L:1,E:-1},"自分で稼いだお金は、基本的に全部自分のものであるべきだ"],
+[{E:1,L:-1},"生まれた家庭の差で人生が大きく左右されるのは不公平で、社会がそれを正すべきだ"],
+[{C:1,L:-0.5},"人は、育った共同体や伝統から切り離された「ただの個人」ではありえない"],
+[{L:1,E:-0.5},"国の役割は、治安や契約を守るくらいの最小限でいい"],
+[{E:1,L:-0.5},"格差は、一番恵まれない人の暮らしを良くする場合にかぎって許される"],
+[{C:-1,L:0.5,E:0.5},"どんな生き方が善いかは個人が決めることで、国が特定の価値観を勧めるべきではない"],
+[{L:1,E:-1},"たとえ善意でも、他人の財産を強制的に分け直すのは自由の侵害だ"],
+[{C:1},"家族や地域、国への忠誠心には、道徳的に大切な意味がある"],
+[{E:1,L:-0.5},"誰もが同じスタートラインに立てるよう、教育や医療は社会全体で支えるべきだ"],
+[{C:-1},"伝統や慣習でも、理屈で正当化できないなら見直していくべきだ"],
+[{C:1,L:-0.5,E:-0.5},"社会には、みんなで共有すべき「善い生き方」の価値観がある"],
+[{C:-1},"人は、たまたま生まれた国や文化に対して、特別な義務を負っているわけではない"]]},
+
+{id:"aes",d:"society",type:"bi",name:"美",q:"美しさは見る人しだい？",
+neg:{name:"美の主観主義",desc:"美しさは物そのものにあるんじゃなくて、見る人の心の中にある、って考え方だよ。スピノザやヒュームもこれに近いことを言ってるし、荘子は「人が美人だと思う人を見ても、魚は深くもぐって逃げていく」って、美の相対性を語ってるんだ。"},
+pos:{name:"美の客観主義",desc:"本当に美しいものは、好みとは関係なく美しい、って考え方だよ。プラトンは「美そのもの（美のイデア）」があると考えたし、名作が時代や国を超えて愛されるのはそのせいだ、とも言えるんだ。"},
+mid:{desc:"美しさは主観的な感覚なんだけど、なぜかみんなと分かち合える…って感じかな。カントの「美の判断は主観的なのに、みんなの同意を求めてしまう」っていう考え方がまさにこれだよ。"},
+survey:"美の価値は客観的 44% ／ 主観的 41%",
+items:[
+[1,"本当に美しいものは、誰が見ても美しいはずだ"],
+[-1,"美しさは、見る人の心の中にある"],
+[1,"芸術作品には、好みとは別に、優れている・劣っているという差がある"],
+[-1,"「この作品が好き」と「この作品は優れている」は、結局同じことだ"],
+[1,"美しさを見抜く目は、訓練によって「正しく」磨かれていくものだ"],
+[-1,"名作と呼ばれるものも、たまたま多くの人の好みに合っただけだ"],
+[1,"時代や文化が違っても、人が美しいと感じるものには共通点がある"],
+[-1,"美しさに「正解」はない"]]}
+];
+
+const PHILS=[
+{n:"ソクラテス",e:"古代ギリシャ（前5世紀）",d:"自分の無知を自覚するところから始める対話で知られる、哲学の祖。「ただ生きるのではなく、善く生きること」を何より大切にして、徳のある人こそ幸福だと考えたんだ。",p:{meta:1,truth:1,eth_V:1,stoic:0.5,skep:-0.5,mind:-0.5,mean_O:1}},
+{n:"プラトン",e:"古代ギリシャ（前4世紀）",d:"ソクラテスの弟子。目に見える世界の向こうに、完全で永遠な「イデア」の世界があると考えたんだ。数学や正義や美の本当の姿は、理性でとらえられるって説いたよ。",p:{mind:-1,real:0.5,abs:1,self:1,src:1,skep:0.5,truth:1,meta:1,aes:1,eth_V:1,pol_C:0.5,pol_L:-1,mean_O:1,stoic:0.5}},
+{n:"アリストテレス",e:"古代ギリシャ（前4世紀）",d:"プラトンの弟子で「万学の祖」。イデアの世界より目の前の現実を大事にしたんだ。人間らしい能力を発揮して生きる「エウダイモニア（幸福）」と、それを支える徳の大切さを説いたよ。",p:{real:1,abs:-0.5,src:-0.5,skep:0.5,truth:1,meta:1,eth_V:1,eth_C:-0.5,pol_C:1,pol_L:-0.5,mean_O:1,aes:0.5,time:-0.5,god_T:0.5}},
+{n:"プロタゴラス",e:"古代ギリシャ（前5世紀）",d:"「人間は万物の尺度である」で知られる、古代ギリシャのソフィスト。何が正しいかは人によって違う、という相対主義の元祖なんだ。神々についても「いるかどうか私には知りえない」って言ってるよ。",p:{truth:-1,meta:-1,god_A:1,god_T:-0.5,god_N:-0.5,aes:-0.5}},
+{n:"エピクロス",e:"古代ギリシャ（前3世紀）",d:"「心の平穏（アタラクシア）」こそ最高の快楽だと説いた、古代の快楽主義者。ぜいたくより、友人と穏やかに過ごす素朴な暮らしを勧めたんだ。「死は私たちにとって何ものでもない」って言葉も有名だよ。",p:{mind:1,real:1,src:-1,skep:0.5,self:-0.5,stoic:-1,fw_det:-1,fw_resp:1}},
+{n:"マルクス・アウレリウス",e:"古代ローマ（2世紀）",d:"ローマ皇帝にしてストア派の哲学者。戦地で書きつけた『自省録』で、変えられないことは受け入れて、自分の心の持ち方を整えるよう、自分に言い聞かせてたんだ。",p:{mind:0.5,real:1,src:-0.5,skep:0.5,truth:1,meta:1,eth_V:1,stoic:1,fw_det:1,fw_resp:1,god_T:0.5,mean_O:1,nat:0.5}},
+{n:"孔子",e:"古代中国（前6〜5世紀）",d:"『論語』で知られる儒教の祖。仁（思いやり）と礼（ふるまいの作法）を身につけた「君子」を理想にしたんだ。家族や社会の中での役割を大切にする考え方だよ。",p:{eth_V:1,pol_C:1,pol_L:-0.5,meta:0.5,mean_O:1,stoic:0.5}},
+{n:"孟子",e:"古代中国（前4世紀）",d:"孔子の教えを受け継いだ「性善説」の人。人には生まれつき思いやりの芽（四端）があって、それを育てていけば誰でも善くなれると説いたんだ。",p:{nat:1,eth_V:1,pol_C:0.5,meta:1,src:0.5}},
+{n:"荀子",e:"古代中国（前3世紀）",d:"「性悪説」を唱えた儒学者。人は生まれつき欲望のままに動くから、礼や学びで自分を作り変えていく必要がある、と考えたんだ。「天」をただの自然とみる、クールな合理主義者でもあるよ。",p:{nat:-1,eth_V:1,pol_C:1,meta:-0.5,god_N:0.5,god_T:-0.5}},
+{n:"荘子",e:"古代中国（前4世紀）",d:"老子と並ぶ道家の思想家。夢で蝶になったのか、蝶が夢で自分になっているのか…という「胡蝶の夢」が有名だよ。善悪や美醜の区別も見方しだいだと考えて、とらわれない生き方を説いたんだ。",p:{truth:-1,skep:-1,self:-0.5,meta:-1,stoic:0.5,aes:-1}},
+{n:"ブッダ",e:"古代インド（前5世紀ごろ）",d:"仏教の開祖。すべては移り変わり（無常）、変わらない「自分」という実体もない（無我）と見抜いて、執着を手放すことで苦しみから解放される道を説いたんだ。",p:{self:-1,stoic:0.5,god_T:-0.5,meta:0.5,eth_V:0.5}},
+{n:"トマス・アクィナス",e:"中世イタリア（13世紀）",d:"中世ヨーロッパ最大の神学者・哲学者。アリストテレスの哲学とキリスト教の信仰を、一つの大きな体系にまとめあげたんだ。理性と信仰は矛盾しない、っていうのが大きなテーマだよ。",p:{god_T:1,god_N:-1,meta:1,eth_V:1,mean_O:1,mind:-0.5,real:1,truth:1,src:-0.5,fw_resp:1,pol_C:0.5,nat:0.5}},
+{n:"ホッブズ",e:"17世紀イギリス",d:"『リヴァイアサン』の著者。自然のままの人間は「万人の万人に対する闘争」に陥るから、みんなで約束して強い国家をつくる必要がある、と考えたんだ。徹底した唯物論者でもあるよ。",p:{nat:-1,mind:1,fw_det:1,fw_resp:1,meta:-1,src:-1,abs:-1}},
+{n:"デカルト",e:"17世紀フランス",d:"「我思う、ゆえに我あり」の人で、近代哲学の父。すべてを疑い抜いた末に、疑っている自分の存在だけは疑えないと気づいたんだ。心と身体は別ものだという二元論でも有名だよ。",p:{mind:-1,self:1,src:1,skep:1,real:1,abs:0.5,god_T:1,fw_det:-0.5,fw_resp:1,truth:1}},
+{n:"スピノザ",e:"17世紀オランダ",d:"「神すなわち自然」と言い切った哲学者。この世界のすべては必然的に起きていて、それを理性で深く理解することが、心の自由と幸福につながると考えたんだ。",p:{fw_det:1,fw_resp:-1,src:1,skep:1,real:1,truth:1,stoic:0.5,aes:-1,meta:-0.5}},
+{n:"ロック",e:"17世紀イギリス",d:"イギリス経験論の代表で、「人の心は生まれたときは白紙」と考えた人。生命・自由・財産という自然権を守るために政府がある、という考え方は、近代の民主主義に大きな影響を与えたんだ。",p:{src:-1,self:-0.5,real:1,god_T:1,pol_L:1,truth:1,abs:-0.5,fw_det:0.5,fw_resp:0.5,meta:0.5}},
+{n:"ライプニッツ",e:"17〜18世紀ドイツ",d:"微積分の発明者の一人でもある天才。世界は「モナド」という心のような単位からできていて、この世界は神が選んだ「ありうる世界の中で最善の世界」だと考えたんだ。",p:{src:1,abs:1,god_T:1,self:1,mind:-1,real:-0.5,fw_det:1,fw_resp:1,skep:0.5,truth:1,meta:1,mean_O:1}},
+{n:"バークリー",e:"18世紀アイルランド",d:"「存在するとは知覚されることである」と言い切った観念論者。物質なんてものはなく、あるのは心とその中の観念だけ。誰も見ていない木も、神が見ているから存在し続けるんだって。",p:{real:-1,mind:-1,src:-1,god_T:1,abs:-1,skep:0.5,self:0.5}},
+{n:"ヒューム",e:"18世紀スコットランド",d:"スコットランドの経験論者で、徹底した懐疑の人。原因と結果のつながりも習慣による思い込みかもしれないと疑い、「自己」も知覚の束にすぎないと言ったんだ。カントを「独断のまどろみ」から目覚めさせた人でもあるよ。",p:{src:-1,skep:-1,self:-1,god_A:1,god_T:-0.5,meta:-1,fw_det:1,fw_resp:1,aes:-0.5,abs:-1}},
+{n:"ルソー",e:"18世紀フランス",d:"『社会契約論』『エミール』の著者。人は本来善いのに、社会や文明がそれを堕落させてしまう、と考えたんだ。みんなの共通の利益を目指す「一般意志」の考え方は、フランス革命にも影響を与えたよ。",p:{nat:1,pol_E:0.5,pol_C:0.5,pol_L:-0.5,god_T:0.5,fw_resp:1,fw_det:-0.5,meta:0.5}},
+{n:"カント",e:"18世紀ドイツ",d:"近代哲学の巨人。経験論と合理論をまとめあげて、「人間に知りうることの限界」を明らかにしようとしたんだ。倫理では「自分のルールが、誰にとっても通用する法則になるように行動せよ」っていう定言命法が有名だよ。",p:{src:0.5,real:-0.5,skep:0.5,eth_D:1,eth_C:-1,meta:1,truth:0.5,fw_det:0.5,fw_resp:1,nat:-0.5}},
+{n:"ベンサム",e:"18〜19世紀イギリス",d:"功利主義の創始者。「最大多数の最大幸福」を合言葉に、快楽と苦痛の計算で法や社会を改革しようとしたんだ。偏見を抜きにすれば、子どもの遊びも詩も同じ価値だ、と言い切ったことでも知られてるよ。",p:{eth_C:1,eth_D:-0.5,stoic:-1,aes:-1,src:-1}},
+{n:"ヘーゲル",e:"19世紀ドイツ",d:"ドイツ観念論の完成者。世界の歴史は、対立と統一をくり返す「弁証法」によって、精神が自由を実現していくプロセスだと考えたんだ。",p:{real:-0.5,pol_C:1,pol_L:-0.5,god_T:0.5,mean_O:1,src:0.5}},
+{n:"ショーペンハウアー",e:"19世紀ドイツ",d:"「人生は苦しみである」と説いた厭世主義の哲学者。世界の根っこには盲目的な「生への意志」があって、満たされない欲望が苦しみを生むと考えたんだ。芸術に没頭している間だけは、その苦しみから離れられるんだって。",p:{mean_N:1,mean_O:-1,stoic:1,god_N:1,god_T:-1,real:-1,fw_det:1,aes:0.5,nat:-0.5}},
+{n:"ミル",e:"19世紀イギリス",d:"功利主義を洗練させたイギリスの哲学者。「満足した豚であるより、不満足な人間であるほうがよい」と言って、快楽にも質の違いがあると考えたんだ。『自由論』で個人の自由の大切さを説いたことでも有名だよ。",p:{eth_C:1,eth_D:-0.5,stoic:-0.5,src:-1,abs:-1,god_A:1,god_T:-0.5,fw_det:1,fw_resp:0.5}},
+{n:"キルケゴール",e:"19世紀デンマーク",d:"「実存主義の父」と呼ばれる哲学者。客観的な理論より「この私がどう生きるか」という主体的な真理を大切にしたんだ。信仰も、理屈を超えた一人ひとりの決断（信仰への跳躍）だと考えたよ。",p:{god_T:1,mean_X:1,truth:-0.5,fw_det:-1,fw_resp:1}},
+{n:"マルクス",e:"19世紀ドイツ",d:"『資本論』の著者。歴史を動かしているのは思想ではなく、モノを生み出す経済のしくみだと考えたんだ（唯物史観）。資本主義のもとで、人が労働から「疎外」されていく問題を鋭く分析したよ。",p:{mind:1,real:1,god_N:1,god_T:-1,pol_E:1,pol_C:0.5,pol_L:-1,meta:-0.5}},
+{n:"ニーチェ",e:"19世紀ドイツ",d:"「神は死んだ」で有名な哲学者。それまでの道徳や価値観を根っこから疑って、自分で新しい価値を生み出す「超人」を理想にしたんだ。同じ人生が永遠にくり返されても「よし、もう一度」と言えるか？っていう「永劫回帰」の問いも有名だよ。",p:{god_N:1,god_T:-1,meta:-1,truth:-1,mean_X:1,mean_O:-1,self:-1,fw_det:0.5,fw_resp:-1,real:-0.5,eth_V:0.5}},
+{n:"ウィリアム・ジェームズ",e:"19〜20世紀アメリカ",d:"アメリカでプラグマティズムを広めた哲学者・心理学者。「ある考えが真であるとは、それが実際に役立つことだ」と考えたんだ。意識はとぎれず流れるものだ、っていう「意識の流れ」の考え方でも知られてるよ。",p:{truth:-1,god_T:0.5,fw_det:-1,fw_resp:1,src:-1,self:-0.5}},
+{n:"ラッセル",e:"20世紀イギリス",d:"論理学者・哲学者で、ノーベル文学賞も受賞したんだ。数学を論理から組み立てようとした『プリンキピア・マテマティカ』（ホワイトヘッドとの共著）が有名だよ。神については「宇宙のティーポット」のたとえで、証明の責任は信じる側にあると論じたんだ。",p:{god_T:-1,god_A:0.5,god_N:0.5,abs:0.5,real:1,src:-0.5,truth:1,meta:-0.5,time:0.5}},
+{n:"ポパー",e:"20世紀オーストリア・イギリス",d:"「反証可能性」を唱えた科学哲学者。科学理論は正しいと証明することはできなくて、間違いを見つけて直していくことで進歩する、と考えたんだ。全体主義を批判した『開かれた社会とその敵』でも有名だよ。",p:{truth:1,real:1,src:0.5,fw_det:-1,fw_resp:1,abs:0.5}},
+{n:"サルトル",e:"20世紀フランス",d:"実存主義の代表選手。「人間は自由の刑に処されている」と言って、決まった本質なんてないからこそ、人は自分の選択によって自分をつくっていくしかない、と考えたんだ。",p:{mean_X:1,mean_O:-1,god_N:1,god_T:-1,fw_resp:1,fw_det:-1,meta:-1,self:-0.5,pol_E:0.5,pol_L:-0.5}},
+{n:"ボーヴォワール",e:"20世紀フランス",d:"実存主義の哲学者で、サルトルのパートナー。「人は女に生まれるのではない、女になるのだ」という『第二の性』の言葉で、フェミニズムに大きな影響を与えたんだ。",p:{mean_X:1,mean_O:-1,god_N:1,god_T:-1,fw_resp:1,fw_det:-1,meta:-0.5,pol_E:1}},
+{n:"カミュ",e:"20世紀フランス",d:"『異邦人』『シーシュポスの神話』の作家・思想家。意味を求める人間と、何も答えない世界とのズレを「不条理」と呼んだんだ。それでも岩を運び続けるシーシュポスを「幸福だと想像しなければならない」と結んだのが有名だよ。",p:{mean_O:-1,mean_X:0.5,mean_N:0.5,god_T:-1,god_N:0.5,nat:0.5}},
+{n:"ロールズ",e:"20世紀アメリカ",d:"20世紀の政治哲学を代表する『正義論』の著者。自分がどんな立場に生まれるかわからない「無知のヴェール」の向こうで選ぶなら、人はいちばん恵まれない人に配慮した社会を選ぶはずだ、と論じたんだ。",p:{pol_E:1,pol_L:-1,pol_C:-0.5,eth_D:0.5,eth_C:-1}},
+{n:"ノージック",e:"20世紀アメリカ",d:"リバタリアニズムを代表する哲学者で、ロールズの同僚でもあったんだ。国家は最小限であるべきだと論じたよ。最高に幸せな夢を見続けられる「経験機械」に入りたいか？っていう思考実験でも有名だね。",p:{pol_L:1,pol_E:-1,pol_C:-0.5,eth_D:1,eth_C:-0.5,stoic:0.5}},
+{n:"デネット",e:"20〜21世紀アメリカ",d:"意識や自由意志を、科学と両立するかたちで説明しようとした哲学者。自己は、脳がつむぐ「物語の重心」のようなものだと考えたんだ。",p:{mind:1,self:-1,fw_det:1,fw_resp:1,god_N:1,god_T:-1}},
+{n:"シンガー",e:"現代オーストラリア",d:"現代を代表する功利主義者。動物の苦しみも人間と同じように考慮すべきだとした『動物の解放』や、できるだけ効果的に人を助けようという「効果的利他主義」で知られてるよ。",p:{eth_C:1,eth_D:-0.5,meta:0.5,god_N:1,god_T:-1,stoic:-0.5}},
+{n:"サンデル",e:"現代アメリカ",d:"ハーバード大学の「正義」の講義で一躍有名になった政治哲学者。人は共同体の中で生きる存在だから、「何が善い生き方か」という問いを避けずに議論すべきだ、と主張してるんだ。",p:{pol_C:1,pol_L:-1,eth_V:1,eth_C:-0.5,meta:0.5}}
+];
+
+const TH={};for(const th of THEMES)TH[th.id]=th;
+const ITEMS=[];
+for(const th of THEMES){th.items.forEach((r,j)=>{const w={};if(typeof r[0]==="number")w[th.id]=r[0];else for(const k in r[0])w[th.id+"_"+k]=r[0][k];ITEMS.push({id:th.id+(j+1),t:th.id,w,text:r[1],j,n:th.items.length})})}
+const N=ITEMS.length;
+const ORDER=(()=>{let a=20261126;const rnd=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};const arr=ITEMS.map(it=>({it,p:(it.j+0.5+(rnd()-0.5)*0.8)/it.n}));arr.sort((x,y)=>x.p-y.p);const o=arr.map(x=>x.it);for(let i=1;i<o.length;i++){if(o[i].t===o[i-1].t){let k=i+1;while(k<o.length&&o[k].t===o[i-1].t)k++;if(k<o.length){const[x]=o.splice(k,1);o.splice(i,0,x)}}}const f=o.findIndex(it=>it.id==="eth1");if(f>0){const[x]=o.splice(f,1);o.unshift(x)}return o})();
+const VALS=[3,2,1,0,-1,-2,-3];
+const VLAB={"3":"はい（強く）","2":"はい","1":"ややはい","0":"どちらとも","-1":"ややいいえ","-2":"いいえ","-3":"いいえ（強く）"};
+const QUADS=[["pp",1,1],["pn",1,-1],["np",-1,1],["nn",-1,-1]];
+const BIW=[24,20,16,13,16,20,24];
+const KEY="philo-type-quiz-v1";
+const S={answers:{},idx:0,memo:"",view:"quiz"};
+const $=id=>document.getElementById(id);
+const fmt=v=>(v<0?"−":"+")+Math.abs(v).toFixed(2);
+const degOf=x=>x<0.4?"ちょっとだけ寄り":x<0.7?"けっこう寄り":"がっつり";
+const WT=k=>/^(god|eth|mean|pol)_/.test(k)?0.7:1;
+let lock=false,resetArm=false,resetTimer=0;
+
+function answeredN(){let n=0;for(const it of ITEMS)if(S.answers[it.id]!=null)n++;return n}
+function compute(ans){const acc={},cnt={},eng={};for(const it of ITEMS){const v=ans[it.id];if(v==null)continue;cnt[it.t]=(cnt[it.t]||0)+1;eng[it.t]=(eng[it.t]||0)+Math.abs(v)/3;for(const k in it.w){const w=it.w[k];const a=acc[k]||(acc[k]={num:0,den:0});a.num+=v*w;a.den+=3*Math.abs(w)}}const sc={};for(const k in acc)sc[k]=acc[k].den?acc[k].num/acc[k].den:0;for(const t in eng)eng[t]/=cnt[t];return{sc,cnt,eng}}
+function optsOf(th,sc){if(th.type==="quad"){const x=sc.fw_det??0,y=sc.fw_resp??0;return QUADS.map(([k,sx,sy])=>({k,o:th.quads[k],v:(sx*x+sy*y)/2}))}return Object.keys(th.opts).map(k=>({k,o:th.opts[k],v:sc[th.id+"_"+k]??0}))}
+function tres(th,sc,n,eng){
+if(!n)return null;
+if(th.type==="bi"){const s=sc[th.id]??0,thr=th.thr||0.15;
+if(Math.abs(s)<thr)return{name:th.mid.name||`${th.neg.name}と${th.pos.name}のあいだ`,desc:th.mid.desc,deg:"",mid:!th.mid.name,strength:th.mid.name?0.45*(eng||0):0,s,others:[th.neg,th.pos]};
+const P=s>0?th.pos:th.neg,O=s>0?th.neg:th.pos;
+return{name:P.name,desc:P.desc,deg:degOf(Math.abs(s)),strength:Math.abs(s),s,others:[O,{name:th.mid.name||"そのあいだ",desc:th.mid.desc}]}}
+const opts=optsOf(th,sc),so=[...opts].sort((a,b)=>b.v-a.v),t=so[0],u=so[1];
+if(th.type==="quad"&&Math.abs(sc.fw_det??0)<0.15&&Math.abs(sc.fw_resp??0)<0.15)return{name:th.center.name,desc:th.center.desc,deg:"",mid:true,strength:0,opts,others:opts.map(o=>o.o)};
+if(th.none&&t.v<0.1)return{name:th.none.name,desc:th.none.desc,deg:"",mid:true,strength:0,opts,others:opts.map(o=>o.o)};
+if(t.v-u.v<0.08)return{name:`${t.o.name} × ${u.o.name}`,desc:t.o.desc,also:u.o.name,deg:"ふたつのあいだ",mid:true,strength:0,opts,top:t.k,top2:u.k,others:so.slice(1).map(o=>o.o)};
+return{name:t.o.name,desc:t.o.desc,deg:degOf(Math.max(0,t.v)),strength:Math.max(0,t.v),opts,top:t.k,others:so.slice(1).map(o=>o.o)}}
+function results(ans){const{sc,cnt,eng}=compute(ans);const R={};for(const th of THEMES)R[th.id]=tres(th,sc,cnt[th.id]||0,eng[th.id]);return{sc,cnt,R}}
+function headline(R,cnt){return THEMES.map(th=>({th,r:R[th.id],n:cnt[th.id]||0})).filter(x=>x.r&&x.n>=3&&!x.r.mid&&x.r.strength>0.15).sort((a,b)=>b.r.strength-a.r.strength).slice(0,3)}
+function match(sc){return PHILS.map(p=>{let dot=0,den=1,mag=0,n=0;const parts=[];for(const k in p.p){const u=sc[k];if(u==null)continue;const pv=p.p[k],w=WT(k);dot+=w*u*pv;den+=w*Math.abs(pv);mag+=Math.abs(u);n++;parts.push({k,u,pv,c:w*u*pv})}if(n<4||mag<0.05)return null;const s=dot/den;return{p,s,n,pct:Math.round(50+50*Math.tanh(2*s)),parts}}).filter(Boolean).sort((a,b)=>b.s-a.s)}
+function keyLabel(k,sign){if(k==="fw_det")return sign>0?"決定論":"非決定論";if(k==="fw_resp")return sign>0?"自由意志あり":"自由意志なし";const i=k.indexOf("_");if(i<0){const th=TH[k];return sign>0?th.pos.name:th.neg.name}if(sign<0)return null;const th=TH[k.slice(0,i)];return th.opts[k.slice(i+1)].name}
+function sameDiff(m){const same=[...new Set(m.parts.filter(x=>x.c>0&&Math.abs(x.u)>=0.15&&Math.abs(x.pv)>=0.5).sort((a,b)=>b.c-a.c).map(x=>keyLabel(x.k,Math.sign(x.pv))).filter(Boolean))].slice(0,3);const diff=m.parts.filter(x=>x.c<0&&Math.abs(x.u)>=0.15).sort((a,b)=>a.c-b.c).map(x=>keyLabel(x.k,Math.sign(x.pv))).filter(Boolean)[0]||"";return{same,diff}}
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify({answers:S.answers,memo:S.memo,idx:S.idx,view:S.view}))}catch(e){}}
+function load(){try{const t=localStorage.getItem(KEY);return t?JSON.parse(t):null}catch(e){return null}}
+
+function updateBar(){const n=answeredN();$("progfill").style.width=(n/N*100)+"%";$("count").textContent=S.view==="quiz"?`${S.idx+1} / ${N}`:`${n} / ${N}問 回答`}
+function renderQ(instant){const it=ORDER[S.idx],th=TH[it.t],v=S.answers[it.id],sc=$("scale");if(instant){sc.classList.add("noanim");requestAnimationFrame(()=>requestAnimationFrame(()=>sc.classList.remove("noanim")))}
+$("qno").textContent="Q"+(S.idx+1);$("qtag").textContent=th.name;$("qtext").textContent=it.text;
+for(const b of sc.querySelectorAll(".opt"))b.setAttribute("aria-checked",String(v!=null&&+b.dataset.v===v));
+const n=answeredN();$("back").disabled=S.idx===0;$("peek").hidden=n===0;$("lead").hidden=n>0;updateBar()}
+function choose(v){if(lock)return;const it=ORDER[S.idx];S.answers[it.id]=v;$("resumed").hidden=true;save();renderQ(false);lock=true;setTimeout(()=>{lock=false;if(S.idx<N-1){S.idx++;renderQ(true);save()}else show("memo")},240)}
+
+function marksHTML(th,r){
+if(th.type==="bi"){const at=r?Math.round((r.s+1)/2*6):-1;return`<div class="ends"><span>${th.neg.name}</span><span>${th.pos.name}</span></div><div class="marks" aria-hidden="true">${BIW.map((w,i)=>`<span class="ov${i===at?" f k":""}" style="--w:${w}px"></span>`).join("")}</div>`}
+const opts=r?r.opts:optsOf(th,{}),vs=opts.map(o=>o.v),mx=Math.max(...vs),mn=Math.min(...vs);
+return`<div class="mopts" style="--n:${opts.length}" aria-hidden="true">${opts.map(o=>{const on=!!(r&&(o.k===r.top||o.k===r.top2));const a=r?(on?1:0.1+0.45*((o.v-mn)/((mx-mn)||1))):0;return`<div class="mopt${on?" on":""}"><span class="ov${r?" f":""}${on?" k":""}" style="--w:22px;--a:${a.toFixed(2)}"></span><span>${o.o.short||o.o.name}</span></div>`}).join("")}</div>`}
+function rowHTML(th,r,n,sc){
+const others=(r?r.others:[]).map(o=>`<p class="oname">${o.name}</p><p>${o.desc}</p>`).join("");
+let score="";if(r){score=th.type==="bi"?`スコア ${fmt(r.s)}（−1〜+1、＋が${th.pos.name}側）`:th.type==="quad"?`決定論 ${fmt(sc.fw_det??0)} ／ 自由と責任 ${fmt(sc.fw_resp??0)}`:r.opts.map(o=>`${o.o.name} ${fmt(o.v)}`).join(" ／ ");score+="・"}
+return`<section class="row"><div class="row-h"><h4 class="tname">${th.name}</h4><span class="tq">${th.q}</span></div><div class="left">${marksHTML(th,r)}<div class="verdict">${r?`<b>${r.name}</b>${r.deg?`<span class="deg">${r.deg}</span>`:""}`:`<span class="deg">まだ回答がないよ</span>`}</div></div><div class="right">${r?`<p class="desc">${r.desc}${r.also?`（${r.also}にもかなり近いよ）`:""}</p>`:""}<details><summary>くわしく</summary><div class="more">${others?`<p class="sub">ほかの立場</p>${others}`:""}${th.survey?`<p class="survey">プロの哲学者アンケートでは…${th.survey}</p>`:""}<p class="survey">${score}${n} / ${th.items.length}問に回答</p></div></details></div></section>`}
+const canShare=typeof navigator.share==="function";
+const pageURL=()=>/^https?:$/.test(location.protocol)?location.href.split("#")[0].split("?")[0]:"";
+function shareText(H,M){let t=H.length?`私の哲学タイプは「${H.map(h=>h.r.name).join(" × ")}」でした！`:"哲学タイプ診断をやってみた！";if(M[0])t+=`いちばん考え方が近い哲学者は${M[0].p.n}（一致度${M[0].pct}%）。`;return t+" #哲学タイプ診断"}
+function xURL(t){const u=pageURL();return"https://twitter.com/intent/tweet?text="+encodeURIComponent(t)+(u?"&url="+encodeURIComponent(u):"")}
+async function share(){const{sc,cnt,R}=results(S.answers);const d={title:"あなたは何主義？ 哲学タイプ診断",text:shareText(headline(R,cnt),match(sc))};const u=pageURL();if(u)d.url=u;try{await navigator.share(d)}catch(e){}}
+function renderDyn(){
+const{sc,cnt,R}=results(S.answers),n=answeredN(),H=headline(R,cnt),M=match(sc);
+const hero=`<section class="hero"><div class="res-wrap">${H.length?`<h1 class="types">${H.map((h,i)=>`${i?'<span class="x">×</span>':""}<span>${h.r.name}</span>`).join("")}</h1><p class="hl">が、あなたの考え方でとくに強く出てるところだよ！${M[0]?`いちばん近い哲学者は<b>${M[0].p.n}</b>（一致度 ${M[0].pct}%）。`:""}</p>`:`<h1 class="types">まだ判定中…</h1><p class="hl">もう少し答えると、あなたの「〇〇主義」が見えてくるよ。</p>`}<p class="hmeta">${n} / ${N}問に回答${n<N?"（途中の結果）":""}</p><div class="hacts">${n<N?`<button type="button" class="btn onband fill" data-act="cont">続きを答える</button>`:""}${H.length?`${canShare?`<button type="button" class="btn onband${n<N?"":" fill"}" data-act="share">結果をシェア</button>`:""}<a class="btn onband" href="${xURL(shareText(H,M))}" target="_blank" rel="noopener">Xでポスト</a>`:""}</div></div></section>`;
+const cards=M.slice(0,3).map(m=>{const sd=sameDiff(m);return`<article class="ph"><div class="ph-top"><div><h3 class="ph-name">${m.p.n}</h3><div class="ph-era">${m.p.e}</div></div><div class="ph-pct">${m.pct}<small>%</small></div></div><p class="ph-d">${m.p.d}</p>${sd.same.length||sd.diff?`<div class="chips">${sd.same.length?`<span class="clab">共通点</span>${sd.same.map(l=>`<span class="chip">${l}</span>`).join("")}`:""}${sd.diff?`<span class="chip diff">ちがうのは「${sd.diff}」なところ</span>`:""}</div>`:""}</article>`}).join("");
+const all=M.map(m=>`<div class="ap"><span>${m.p.n}</span><span class="b"><i style="width:${m.pct}%"></i></span><span class="v">${m.pct}%</span></div>`).join("");
+const phil=M.length?`<section class="res-wrap"><h2 class="h2">考え方が近い哲学者</h2><div class="phils">${cards}</div><details><summary>${M.length}人全員との一致度を見る</summary><div class="allph">${all}</div></details></section>`:"";
+const rows=DOMAINS.map(([d,dn])=>`<h3 class="dom">${dn}</h3><div class="rows">${THEMES.filter(t=>t.d===d).map(th=>rowHTML(th,R[th.id],cnt[th.id]||0,sc)).join("")}</div>`).join("");
+$("resDyn").innerHTML=hero+phil+`<section class="res-wrap"><h2 class="h2">テーマ別の結果</h2>${rows}</section>`}
+function renderReview(){$("rlist").innerHTML=ORDER.map(it=>`<li data-id="${it.id}"><p>${it.text}</p><div class="mini">${VALS.map(v=>`<button type="button" data-v="${v}" aria-label="${VLAB[v]}" aria-pressed="${S.answers[it.id]===v}"><span class="ov"></span></button>`).join("")}</div></li>`).join("")}
+function summary(){
+const{sc,cnt,R}=results(S.answers),n=answeredN(),H=headline(R,cnt),M=match(sc);
+const L=["【哲学タイプ診断の結果】",`回答：${n} / ${N}問`];
+if(H.length)L.push("いちばん強く出たところ："+H.map(h=>h.r.name).join(" × "));
+if(M.length)L.push("考え方が近い哲学者："+M.slice(0,3).map(m=>`${m.p.n} ${m.pct}%`).join("、"));
+for(const[d,dn]of DOMAINS){L.push("","■"+dn);for(const th of THEMES.filter(t=>t.d===d)){const r=R[th.id];let ex="";if(r){ex=th.type==="bi"?fmt(r.s):th.type==="quad"?`決定論${fmt(sc.fw_det??0)}・自由${fmt(sc.fw_resp??0)}`:r.opts.map(o=>o.o.name+fmt(o.v)).join("・")}L.push(`・${th.name}：${r?`${r.name}${r.deg?`（${r.deg}）`:""} [${ex}]`:"未回答"}`)}}
+if(S.memo.trim())L.push("","■感想メモ",S.memo.trim());
+return L.join("\n")}
+async function copy(){const t=summary(),out=$("copied");try{await navigator.clipboard.writeText(t);out.textContent="コピーしたよ！"}catch(e){const ta=$("copybox");ta.hidden=false;ta.value=t;ta.focus();ta.select();let ok=false;try{ok=document.execCommand("copy")}catch(_){}out.textContent=ok?"コピーしたよ！":"下のテキストを長押しして、コピーしてね"}}
+function reset(btn){if(!resetArm){resetArm=true;btn.textContent="本当に全部消す？ もう一度タップ";clearTimeout(resetTimer);resetTimer=setTimeout(()=>{resetArm=false;btn.textContent="最初からやり直す"},4000);return}
+clearTimeout(resetTimer);resetArm=false;btn.textContent="最初からやり直す";S.answers={};S.memo="";S.idx=0;$("copybox").hidden=true;$("copied").textContent="";$("review").open=false;show("quiz")}
+function show(v){S.view=v;document.body.classList.toggle("wide",v==="result");for(const id of["quiz","memo","result"])$("v-"+id).hidden=id!==v;if(v==="quiz")renderQ(true);if(v==="memo")$("memo").value=S.memo;if(v==="result"){renderDyn();renderReview();$("memo2").value=S.memo}updateBar();window.scrollTo(0,0);save()}
+
+for(const b of document.querySelectorAll("#scale .opt"))b.addEventListener("click",()=>choose(+b.dataset.v));
+$("back").addEventListener("click",()=>{if(S.idx>0){S.idx--;renderQ(true);save()}});
+$("peek").addEventListener("click",()=>show("result"));
+$("memo").addEventListener("input",e=>{S.memo=e.target.value;save()});
+$("memo2").addEventListener("input",e=>{S.memo=e.target.value;save()});
+$("toResult").addEventListener("click",()=>show("result"));
+$("memoBack").addEventListener("click",()=>{S.idx=N-1;show("quiz")});
+$("v-result").addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act;if(a==="cont"){const f=ORDER.findIndex(it=>S.answers[it.id]==null);S.idx=f<0?0:f;show("quiz")}else if(a==="copy")copy();else if(a==="share")share();else if(a==="reset")reset(b)});
+$("rlist").addEventListener("click",e=>{const b=e.target.closest("button[data-v]");if(!b)return;const li=b.closest("li");S.answers[li.dataset.id]=+b.dataset.v;for(const x of li.querySelectorAll("button"))x.setAttribute("aria-pressed",String(x===b));save();renderDyn();updateBar()});
+document.addEventListener("keydown",e=>{if(S.view!=="quiz"||e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key;if(k>="1"&&k<="7"&&k.length===1){choose(VALS[+k-1]);e.preventDefault()}else if(k==="Backspace"||k==="ArrowLeft"){if(S.idx>0){S.idx--;renderQ(true);save()}e.preventDefault()}});
+
+function start(data){const saved=data&&data.answers?data:load();if(saved){S.answers=saved.answers&&typeof saved.answers==="object"?saved.answers:{};S.memo=typeof saved.memo==="string"?saved.memo:"";S.idx=Math.min(Math.max(0,saved.idx|0),N-1)}
+for(const k in S.answers)if(!(k in BYID)||!VALS.includes(S.answers[k]))delete S.answers[k];
+const n=answeredN();let v=saved&&["quiz","memo","result"].includes(saved.view)?saved.view:"quiz";if(n===N&&v==="quiz")v="result";if(n===0)v="quiz";
+if(v==="quiz"){if(S.answers[ORDER[S.idx].id]!=null){const f=ORDER.findIndex(it=>S.answers[it.id]==null);if(f>=0)S.idx=f}if(n>0)$("resumed").hidden=false}
+show(v)}
+const BYID={};for(const it of ITEMS)BYID[it.id]=it;
+$("nq").textContent=N;
+start(null);
+}
+</script>
+</body>
+</html>
